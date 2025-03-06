@@ -61,7 +61,7 @@ public class Chimera extends Player {
  
 	}
 
-
+ 
 	private Attack Bite() {
 	
         Attack a = new Attack("Bite"); 

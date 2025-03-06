@@ -83,7 +83,7 @@ public class GnollWarrior extends Player {
          .dieType(10) 
          .bonus(1) 
          .damageTypeRefId(RefList.damagetypespiercing); 
-        // If you wish to store thrown range, do something like:
+         
         // a.setThrownRange(150, 600); 
         return a;
     }
@@ -99,7 +99,6 @@ public class GnollWarrior extends Player {
 					Action rampage = new Action("Rampage", RefList.actiontypesfreeaction);
 					rampage.addAttack(Rend());
 					new ActionManager().rollAttack(source, rampage, rampage.getFirstAttack(), target, state, new AttackSettings());
-					state.flagThisFight();
 				}
 				return false;
 			}

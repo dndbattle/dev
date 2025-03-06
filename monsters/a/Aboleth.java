@@ -88,9 +88,9 @@ public class Aboleth extends Player {
 			}
 			
 			@Override
-			public Action createExecutionAction(Player me) {
+			public Action createExecutionAction(Action a, Player me) {
 				DamageModel damage = new DamageModel(new NbrOfDice(3), new DieType(6), new DamageType(RefList.damagetypespsychic));
-				Action action = Action.createRangedAction(createInitialAction(), new RangeInFeet(30), damage);
+				Action action = Action.createRangedAction(a, new RangeInFeet(30), damage);
 				action.oneTimeSave.dc = 16;
 				action.oneTimeSave.saveVsRefId = RefList.savingthrowvsintelligence;
 
@@ -103,11 +103,11 @@ public class Aboleth extends Player {
 			}
 			
 			@Override
-			public int evaluateScore(Player me, Player target, long actionTypeRefId, GameState state) throws InvalidActionException {
+			public int evaluateScore(Player me, Action a, Player target, long actionTypeRefId, GameState state) throws InvalidActionException {
 				if (!target.isCharmed() && !target.isGrappled()) {
 					throw new InvalidActionException();
 				}
-				Action action = createExecutionAction(me);
+				Action action = createExecutionAction(a, me);
 				
 				int amount = new StrategyManager().getAverageDamage(action, me, target, state);
 				
@@ -120,7 +120,7 @@ public class Aboleth extends Player {
 				if (!target.isCharmed() && !target.isGrappled()) {
 					return; // not possible during multi attack
 				}
-				Action action = createExecutionAction(me);
+				Action action = createExecutionAction(a, me);
 				
 				new SpellManager().castOneTimeSaveForHalf(me, action, target, state);
 				me.heal(Arrays.asList(new Damage(Roll.d(10), RefList.damagetypesheal)), state);
@@ -134,7 +134,7 @@ public class Aboleth extends Player {
 
 	private Attack dominateMind() {
 		Attack enslave = new Attack("Dominate Mind");
-		enslave.setSpell(new Dominate(enslave.getAttackName(), 14, false));
+		enslave.setSpell(new Dominate(enslave.getAttackName(), 16, false));
 		return enslave;
 	}
 	 

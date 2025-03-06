@@ -3,15 +3,32 @@
  */
 package com.dndcombat.monsters.b;
 
+import java.util.Arrays;
+import java.util.List;
+
+import com.dndcombat.actions.ActionManager;
+import com.dndcombat.actions.MainActionAgainException;
+import com.dndcombat.actions.TargetManager;
+import com.dndcombat.combat.strategies.HealerWizardStrategy;
+import com.dndcombat.creatures.model.DamageModel;
+import com.dndcombat.fight.map.Node;
 import com.dndcombat.fight.model.DurationType;
+import com.dndcombat.fight.model.GameState;
+import com.dndcombat.fight.model.Location;
+import com.dndcombat.fight.model.ModifierType;
 import com.dndcombat.fight.model.DurationType.WhenToEnd;
 import com.dndcombat.fight.model.Player;
+import com.dndcombat.fight.modifiertypes.DefaultModifierType;
+import com.dndcombat.messaging.ClientBrowser;
 import com.dndcombat.model.Action;
 import com.dndcombat.model.Attack;
 import com.dndcombat.model.Creature;
 import com.dndcombat.model.RefList;
+import com.dndcombat.model.SaveDC;
+import com.dndcombat.monster.actions.WithinXFeetEffect;
 import com.dndcombat.monster.traits.FireAura;
 import com.dndcombat.monster.traits.MagicResistance;
+import com.dndcombat.spells.basic.RangeInFeet;
 
 /**
  
@@ -20,6 +37,8 @@ public class Balor extends Player {
  
 	private static final long serialVersionUID = 1L;
 
+//	Next up Death Throws and Teleport (to cleric/wizard)
+	
 	public Balor() {
 		super(new Creature());
 		create();
@@ -51,7 +70,7 @@ public class Balor extends Player {
 	    
 	    // TODO death throes
 	    // fire aura
-        getCreature().addModifierType(new FireAura());
+        getCreature().addModifierType(new FireAura(3,6));
         // legendary resistance
 	    getCreature().setLegendaryResistances(3);
 	    // magic resistance
@@ -67,10 +86,59 @@ public class Balor extends Player {
         addAction(new Action("Lightning Blade", RefList.actiontypesmainaction)
                 .addAttack(LightningBlade()));
         
-        // Bonus actions
-        // TODO teleport
+        getCreature().addModifierType(teleport());
+        
+        getCreature().addModifierType(deathThroes());
     }
     
+    private ModifierType deathThroes() {
+    	return new DefaultModifierType("Death Throes") {
+    		 
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void applyModifierTypeOnMyDeath(Player me, GameState state) {
+				try {
+					Action explode = new Action("Death Throes", RefList.actiontypesfreeaction);
+					WithinXFeetEffect w = new WithinXFeetEffect(30, explode.getActionName(), 
+							Arrays.asList(new DamageModel().nbrDice(9).dieType(6).damageTypeRefId(RefList.damagetypesfire),
+									new DamageModel().nbrDice(9).dieType(6).damageTypeRefId(RefList.damagetypesforce)), new SaveDC().dc(30).saveVsRefId(RefList.savingthrowvsdexterity), 0);
+					explode.setMonsterSpell(w);
+					List<Player> targets = state.getEnemiesWithinSquares(me, 6);
+					try {
+						new ActionManager().performAction(me, targets.size() == 0 ? new Player(new Node()) : targets.get(0), explode, state);
+					} catch (MainActionAgainException main) {
+						
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+			}
+        };
+    }
+
+    private ModifierType teleport() {
+    	return new DefaultModifierType("Teleport") {
+    		 
+			private static final long serialVersionUID = 1L;
+        	@Override
+        	public void applyModifierTypeOnMeStartOfMyTurn(Player me, GameState state) {
+        		if (!me.hasBonusAction()) {
+        			return;
+        		}
+        		Player healerOrWizard = new TargetManager().getPriorityEnemy(me, state, new RangeInFeet(50), new HealerWizardStrategy());
+        		if (healerOrWizard != null && !me.isNextTo(healerOrWizard)) {
+            		Location nextTo  = healerOrWizard.getLocationNextToMeFor(me, state);
+            		if (nextTo != null) {
+    		            me.setLocation(nextTo);
+    		            state.addActionLog(getName() + " teleports to (" + nextTo.xpos() + ", " + nextTo.ypos() + ")");
+    		            me.useBonusAction();
+    					ClientBrowser.updateLocation(me, state);
+            		}
+
+        		}
+        	}
+        };
+    }
 
 	private Attack FlameWhip() {
 		

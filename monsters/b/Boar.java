@@ -47,7 +47,7 @@ public class Boar extends Player {
                 .addAttack(Gore()));
    
         DamageModel d = new DamageModel().nbrDice(1).dieType(6).autoApplyCondition(RefList.conditionsprone, new DurationType(10));
-		getCreature().getModifierTypes().add(new ChargeDamage(d, 20));
+		getCreature().getModifierTypes().add(new ChargeDamage(d, 20, "Gore"));
 
     }
     

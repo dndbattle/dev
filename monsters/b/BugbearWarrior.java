@@ -109,7 +109,7 @@ public class BugbearWarrior extends Player {
 	     .dieType(4) 
 	     .bonus(2) 
 	     .damageTypeRefId(RefList.damagetypesbludgeoning); 
-	    // If you wish to store thrown range, do something like:
+	     
 	    // a.setThrownRange(20, 60); 
 	    return a;
 	}
@@ -126,7 +126,7 @@ public class BugbearWarrior extends Player {
 	     .dieType(4) 
 	     .bonus(2) 
 	     .damageTypeRefId(RefList.damagetypesbludgeoning); 
-	    // If you wish to store thrown range, do something like:
+	     
 	    // a.setThrownRange(20, 60); 
 	    return a;
 	}

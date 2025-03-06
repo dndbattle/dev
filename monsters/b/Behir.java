@@ -113,7 +113,7 @@ public class Behir extends Player {
 					// already grappled
 				} else if (target.isActive()) {
 		       		Restrained r = new Restrained(source, action, new DurationType(10), state);
-		       		target.addModifier(r);
+		       		target.addModifier(state,r);
 		       		state.addActionLog(source.getName() + " uses " + modifierName + " to restrain " + target.getName());
 		      
 		       	}

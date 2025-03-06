@@ -121,7 +121,7 @@ public class GiantSpider extends Player {
 
 		 	 
 			@Override
-			public int evaluateScore(Player me, Player target, long actionTypeRefId, GameState state) throws InvalidActionException {
+			public int evaluateScore(Player me, Action a, Player target, long actionTypeRefId, GameState state) throws InvalidActionException {
 				recharge.check(me, spellName, state);
 				// dont really want to use more than once per battle
 				if (target.isImmuneToCondition(Restrained.class)
@@ -143,7 +143,7 @@ public class GiantSpider extends Player {
 			
 			@Override
 			public void execute(Action action, Player me, Player target, GameState state) {
-				recharge.use(state);
+				recharge.use(me, state);
 				affect(me, target, state);
 				me.castSpell(action);
 			}
@@ -160,8 +160,7 @@ public class GiantSpider extends Player {
 					DurationType duration = new DurationType(10);
 					Restrained restrained = new Restrained(me, createInitialAction(), duration, state);
 					restrained.setSourceAction(action);
-					target.addModifier(restrained);
-					state.flagThisFight();
+					target.addModifier(state,restrained);
 					
 				} else {
 					state.addActionLog(me.getName() + " misses " + target.getName() + " with "+spellName+", " + sr.getRollDisplay());
@@ -169,7 +168,7 @@ public class GiantSpider extends Player {
 			}
 
 			@Override
-			public Action createExecutionAction(Player me) {
+			public Action createExecutionAction(Action a, Player me) {
 				// TODO Auto-generated method stub
 				return null;
 			}

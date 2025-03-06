@@ -97,7 +97,7 @@ public class GoblinWarrior extends Player {
          .dieType(6) 
          .bonus(2) 
          .damageTypeRefId(RefList.damagetypespiercing); 
-        // If you wish to store thrown range, do something like:
+         
         // a.setThrownRange(80, 320); 
         return a;
     }

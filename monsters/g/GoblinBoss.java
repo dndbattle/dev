@@ -14,6 +14,7 @@ import com.dndcombat.fight.model.Location;
 import com.dndcombat.fight.model.ModifierType;
 import com.dndcombat.fight.model.Player;
 import com.dndcombat.fight.modifiertypes.DefaultModifierType;
+import com.dndcombat.messaging.ClientBrowser;
 import com.dndcombat.model.Action;
 import com.dndcombat.model.Attack;
 import com.dndcombat.model.Creature;
@@ -90,7 +91,7 @@ public class GoblinBoss extends Player {
          .dieType(6) 
          .bonus(2) 
          .damageTypeRefId(RefList.damagetypespiercing); 
-        // If you wish to store thrown range, do something like:
+         
         // a.setThrownRange(80, 320); 
         return a;
     }
@@ -113,6 +114,8 @@ public class GoblinBoss extends Player {
 						Location goblinlocation = p.getLocation();
 						goblin.setLocation(bosslocation);
 						goblinboss.setLocation(goblinlocation);
+						ClientBrowser.updateLocation(goblin, state);
+						ClientBrowser.updateLocation(goblinboss, state);
 						break;
 					}
 				}

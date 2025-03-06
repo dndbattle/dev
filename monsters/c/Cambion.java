@@ -33,6 +33,7 @@ public class Cambion extends Player {
 
 		// Saving Throws
 		strSave(+7).dexSave(+4).conSave(+6).intSave(+5).wisSave(+1).chaSave(+6);
+		setMonsterSpellDC(14);
 	
 		 // Combat Stats
 		ac(19).init(+4).hp(105).speed(30).cr(5);

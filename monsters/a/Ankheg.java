@@ -92,6 +92,7 @@ public class Ankheg extends Player {
 				.breathName("Acid Spray")
 				.useWhileGrappling(false)
 				.recharge(6)
+				.shape("Line")
 				.rangeLengthFeet(30)
 				.rangeWidthFeet(5)
 				.damage(damage)

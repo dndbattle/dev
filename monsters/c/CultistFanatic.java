@@ -40,6 +40,9 @@ public class CultistFanatic extends Player {
 	
 		 // Combat Stats
 		ac(13).init(+2).hp(44).speed(30).cr(2);
+		
+		setMonsterSpellDC(14);
+		setMonsterSpellAttack(4);
  
         // Size and Type
 	    size(RefList.creaturesizesmedium).type(RefList.creaturetypeshumanoid);

@@ -116,6 +116,7 @@ public class DeathKnight extends Player {
 		Action a = new Action("Hellfire Orb", RefList.actiontypesmainaction);
 		BreathWeapon bw =BreathWeapon.builder()
 				.breathName(a.getActionName())
+				.shape("Sphere")
 				.coneOrSphereSizeFeet(20)
 				.recharge(5)
 				.saveDC(18)
@@ -159,7 +160,7 @@ public class DeathKnight extends Player {
 			}
 		};
 	}
-	
+	 
 
 	private Action destructiveWave() {
 		Action a = new Action("Destructive Wave", RefList.actiontypesmainaction);
@@ -171,7 +172,7 @@ public class DeathKnight extends Player {
 
 	private Action fellWord() {
 		Action a = new Action("Fell Word", RefList.actiontypeslegendaryaction);
-		a.setMaxNbrUsesPerRound(1);
+		a.setMaxUsesPerRound(1);
 		
 		SaveDC save = new SaveDC();
 		save.dc = 18;
@@ -185,7 +186,7 @@ public class DeathKnight extends Player {
 
 	private Action command() {
 		Action a = new Action("Command", RefList.actiontypeslegendaryaction);
-		a.setMaxNbrUsesPerRound(1);
+		a.setMaxUsesPerRound(1);
 		a.setMonsterSpell(new Command());
 		return a;
 	}
