@@ -1,4 +1,4 @@
-# monster custom code examples, 2024 monsters
+# D&D Combat Simulator (2024 rules) 
 https://dndbattle.com
 
 Welcome to DnDbattle.com, your go-to tool for simulating Dungeons & Dragons 5th Edition combat encounters.
